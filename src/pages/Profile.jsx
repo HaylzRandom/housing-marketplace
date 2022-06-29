@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -6,6 +6,10 @@ import { toast } from 'react-toastify';
 import { getAuth, updateProfile, updateEmail } from 'firebase/auth';
 import { updateDoc, doc } from 'firebase/firestore';
 import { db } from '../firebase/firebase.config';
+
+// Assets
+import arrowRight from '../assets/svg/keyboardArrowRightIcon.svg';
+import homeIcon from '../assets/svg/homeIcon.svg';
 
 function Profile() {
 	const auth = getAuth();
@@ -114,6 +118,11 @@ function Profile() {
 						/>
 					</form>
 				</div>
+				<Link to='/create-listing' className='createListing'>
+					<img src={homeIcon} alt='Home' />
+					<p>Sell or rent your home</p>
+					<img src={arrowRight} alt='Arrow Right' />
+				</Link>
 			</main>
 		</div>
 	);

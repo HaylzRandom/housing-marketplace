@@ -10,7 +10,7 @@ function Navbar() {
 	const navigate = useNavigate();
 	const location = useLocation();
 
-    // Checking which route current page is
+	// Checking which route current page is
 	const pathMatchRoute = (route) => {
 		if (route === location.pathname) {
 			return true;
@@ -48,7 +48,7 @@ function Navbar() {
 									? 'navbarListItemNameActive'
 									: 'navbarListItemName'
 							}>
-							Offer
+							Offers
 						</p>
 					</li>
 					<li className='navbarListItem' onClick={() => navigate('/profile')}>
