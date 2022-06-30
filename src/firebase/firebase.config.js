@@ -6,7 +6,7 @@ import { getStorage, connectStorageEmulator } from 'firebase/storage';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-	apiKey: 'AIzaSyDlbkVLI_26tuYSodzrPc4ogZhdLyg-a38',
+	apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
 	authDomain: 'housing-marketplace-c159e.firebaseapp.com',
 	projectId: 'housing-marketplace-c159e',
 	storageBucket: 'housing-marketplace-c159e.appspot.com',

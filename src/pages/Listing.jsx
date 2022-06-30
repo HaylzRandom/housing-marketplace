@@ -6,6 +6,18 @@ import { getDoc, doc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { db } from '../firebase/firebase.config';
 
+// Leaflet
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+
+// Swiper
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+import 'swiper/css/a11y';
+
 // Components
 import Spinner from '../components/Spinner';
 
@@ -40,7 +52,25 @@ function Listing() {
 
 	return (
 		<main>
-			{/* Slider */}
+			<Swiper
+				modules={[Navigation, Pagination, Scrollbar, A11y]}
+				slidesPerView={1}
+				pagination={{ clickable: true }}
+				navigation
+				className='swiper-container'>
+				{listing.imageUrls.map((url, index) => {
+					return (
+						<SwiperSlide key={index}>
+							<div
+								className='swiperSlideDiv'
+								style={{
+									background: `url(${listing.imageUrls[index]}) center no-repeat`,
+									backgroundSize: 'cover',
+								}}></div>
+						</SwiperSlide>
+					);
+				})}
+			</Swiper>
 
 			<div
 				className='shareIconDiv'
@@ -93,7 +123,23 @@ function Listing() {
 
 					<p className='listingLocationTitle'>Location</p>
 
-					{/* MAP */}
+					<div className='leafletContainer'>
+						<MapContainer
+							style={{ height: '100%', width: '100%' }}
+							center={[listing.geolocation.lat, listing.geolocation.lon]}
+							zoom={13}
+							scrollWheelZoom={false}>
+							<TileLayer
+								attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+								url='https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png'
+							/>
+
+							<Marker
+								position={[listing.geolocation.lat, listing.geolocation.lon]}>
+								<Popup>{listing.location}</Popup>
+							</Marker>
+						</MapContainer>
+					</div>
 
 					{auth.currentUser?.uid !== listing.userRef && (
 						<Link
