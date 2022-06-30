@@ -18,6 +18,7 @@ import SignUp from './pages/SignUp';
 import Category from './pages/Category';
 import CreateListing from './pages/CreateListing';
 import Listing from './pages/Listing';
+import EditListing from './pages/EditListing';
 import Contact from './pages/Contact';
 
 function App() {
@@ -43,6 +44,14 @@ function App() {
 						element={
 							<PrivateRoute>
 								<CreateListing />
+							</PrivateRoute>
+						}
+					/>
+					<Route
+						path='/edit-listing/:listingId'
+						element={
+							<PrivateRoute>
+								<EditListing />
 							</PrivateRoute>
 						}
 					/>

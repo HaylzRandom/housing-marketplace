@@ -76,7 +76,7 @@ function Offers() {
 		try {
 			// Set limit of listings per page
 			const perPage = 10;
-			
+
 			// Get reference
 			const listingsRef = collection(db, 'listings');
 
