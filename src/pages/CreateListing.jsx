@@ -91,12 +91,10 @@ function CreateListing() {
 			} else {
 				geolocation.lat = data.results[0]?.lat;
 				geolocation.lon = data.results[0]?.lon;
-				location = data.query?.text;
 			}
 		} else {
 			geolocation.lat = latitude;
 			geolocation.lon = longitude;
-			location = address;
 		}
 
 		// Store Image in Firebase
@@ -115,14 +113,14 @@ function CreateListing() {
 						const progress =
 							(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 						console.log('Upload is ' + progress + '% done');
-						switch (snapshot.state) {
+						/* 						switch (snapshot.state) {
 							case 'paused':
 								console.log('Upload is paused');
 								break;
 							case 'running':
 								console.log('Upload is running');
 								break;
-						}
+						} */
 					},
 					(error) => {
 						// Handle unsuccessful uploads
@@ -154,10 +152,14 @@ function CreateListing() {
 			timestamp: serverTimestamp(),
 		};
 
+		formDataCopy.location = address;
 		delete formDataCopy.images;
 		delete formDataCopy.address;
-		location && (formDataCopy.location = location);
+		delete formDataCopy.longitude;
+		delete formDataCopy.latitude;
 		!formDataCopy.offer && delete formDataCopy.discountedPrice;
+
+		console.log(formDataCopy);
 
 		const docRef = await addDoc(collection(db, 'listings'), formDataCopy);
 
