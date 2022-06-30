@@ -22,7 +22,6 @@ import ListingItem from '../components/ListingItem';
 // Assets
 import arrowRight from '../assets/svg/keyboardArrowRightIcon.svg';
 import homeIcon from '../assets/svg/homeIcon.svg';
-import { async } from '@firebase/util';
 
 function Profile() {
 	const auth = getAuth();
@@ -92,15 +91,12 @@ function Profile() {
 		}
 
 		try {
-			console.log(auth.currentUser.email);
-			console.log(email);
 			if (auth.currentUser.email !== email) {
 				// Update display name in firebase
 				await updateEmail(auth.currentUser, email);
 
 				// Update in firestore
 				const userRef = doc(db, 'users', auth.currentUser.uid);
-				console.log(userRef);
 				await updateDoc(userRef, {
 					email,
 				});
@@ -108,7 +104,6 @@ function Profile() {
 				toast.success('Email updated!');
 			}
 		} catch (error) {
-			console.log(error);
 			toast.error('Could not update email details');
 		}
 	};

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { toast } from 'react-toastify';
@@ -18,8 +18,24 @@ import { db } from '../firebase/firebase.config';
 // Components
 import Spinner from '../components/Spinner';
 
+const initialFormState = {
+	type: 'rent',
+	name: '',
+	bedrooms: 1,
+	bathrooms: 1,
+	parking: false,
+	furnished: false,
+	address: '',
+	offer: false,
+	regularPrice: 0,
+	discountedPrice: 0,
+	images: {},
+	latitude: 0,
+	longitude: 0,
+};
+
 function CreateListing() {
-	const [geolocationEnabled, setGeolocationEnabled] = useState(true);
+	const geolocationEnabled = true;
 	const [loading, setLoading] = useState(false);
 	const [formData, setFormData] = useState(initialFormState);
 
@@ -52,6 +68,7 @@ function CreateListing() {
 		});
 
 		return unsubscribe;
+		// eslint-disable-next-line
 	}, [auth, navigate]);
 
 	const onSubmit = async (e) => {
@@ -59,7 +76,7 @@ function CreateListing() {
 		setLoading(true);
 
 		// Checking that discounted price less than regular price
-		if (discountedPrice >= regularPrice) {
+		if (+discountedPrice >= +regularPrice) {
 			setLoading(false);
 			toast.error('Discounted price needs to be less than regular price!');
 			return;
@@ -73,7 +90,6 @@ function CreateListing() {
 		}
 
 		let geolocation = {};
-		let location;
 
 		// Using Geoapify API
 		if (geolocationEnabled) {
@@ -110,10 +126,11 @@ function CreateListing() {
 				uploadTask.on(
 					'state_changed',
 					(snapshot) => {
+						/*
 						const progress =
 							(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-						console.log('Upload is ' + progress + '% done');
-						/* 						switch (snapshot.state) {
+
+						 						switch (snapshot.state) {
 							case 'paused':
 								console.log('Upload is paused');
 								break;
@@ -426,21 +443,5 @@ function CreateListing() {
 		</div>
 	);
 }
-
-const initialFormState = {
-	type: 'rent',
-	name: '',
-	bedrooms: 1,
-	bathrooms: 1,
-	parking: false,
-	furnished: false,
-	address: '',
-	offer: false,
-	regularPrice: 0,
-	discountedPrice: 0,
-	images: {},
-	latitude: 0,
-	longitude: 0,
-};
 
 export default CreateListing;

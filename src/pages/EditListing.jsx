@@ -2,24 +2,34 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { toast } from 'react-toastify';
-import { v4 as uuidv4 } from 'uuid';
 
 // Firebase
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import {
-	getStorage,
-	ref,
-	uploadBytesResumable,
-	getDownloadURL,
-} from 'firebase/storage';
+
 import { serverTimestamp, doc, updateDoc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebase.config';
 
 // Components
 import Spinner from '../components/Spinner';
 
+const initialFormState = {
+	type: 'rent',
+	name: '',
+	bedrooms: 1,
+	bathrooms: 1,
+	parking: false,
+	furnished: false,
+	address: '',
+	offer: false,
+	regularPrice: 0,
+	discountedPrice: 0,
+	images: {},
+	latitude: 0,
+	longitude: 0,
+};
+
 function EditListing() {
-	const [geolocationEnabled, setGeolocationEnabled] = useState(true);
+	const geolocationEnabled = true;
 	const [loading, setLoading] = useState(false);
 	const [listing, setListing] = useState(null);
 	const [formData, setFormData] = useState(initialFormState);
@@ -35,7 +45,6 @@ function EditListing() {
 		offer,
 		regularPrice,
 		discountedPrice,
-		images,
 		latitude,
 		longitude,
 	} = formData;
@@ -43,6 +52,14 @@ function EditListing() {
 	const auth = getAuth();
 	const navigate = useNavigate();
 	const params = useParams();
+
+	// Redirect if listing is not user's
+	useEffect(() => {
+		if (listing && listing.userRef !== auth.currentUser.uid) {
+			toast.error('You cannot edit that listing');
+			navigate('/');
+		}
+	});
 
 	// Fetch listing to edit
 	useEffect(() => {
@@ -75,15 +92,8 @@ function EditListing() {
 		});
 
 		return unsubscribe;
+		// eslint-disable-next-line
 	}, [auth, navigate]);
-
-	// Redirect if listing is not user's
-	useEffect(() => {
-		if (listing && listing.userRef !== auth.currentUser.uid) {
-			toast.error('You cannot edit that listing');
-			navigate('/');
-		}
-	});
 
 	const onSubmit = async (e) => {
 		e.preventDefault();
@@ -104,7 +114,6 @@ function EditListing() {
 		} */
 
 		let geolocation = {};
-		let location;
 
 		// Using Geoapify API
 		if (geolocationEnabled) {
@@ -151,7 +160,7 @@ function EditListing() {
 							case 'running':
 								console.log('Upload is running');
 								break;
-						} 
+						}
 					},
 					(error) => {
 						// Handle unsuccessful uploads
@@ -457,21 +466,5 @@ function EditListing() {
 		</div>
 	);
 }
-
-const initialFormState = {
-	type: 'rent',
-	name: '',
-	bedrooms: 1,
-	bathrooms: 1,
-	parking: false,
-	furnished: false,
-	address: '',
-	offer: false,
-	regularPrice: 0,
-	discountedPrice: 0,
-	images: {},
-	latitude: 0,
-	longitude: 0,
-};
 
 export default EditListing;

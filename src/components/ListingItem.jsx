@@ -56,9 +56,7 @@ function ListingItem({ listing, id, onDelete, onEdit }) {
 				/>
 			)}
 
-			{onEdit && (
-				<EditIcon className='editIcon' onClick={() => onEdit(listing.id)} />
-			)}
+			{onEdit && <EditIcon className='editIcon' onClick={() => onEdit(id)} />}
 		</li>
 	);
 }

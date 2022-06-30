@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 // Firebase
 import { getDoc, doc } from 'firebase/firestore';
@@ -28,7 +28,7 @@ function Listing() {
 	const [listing, setListing] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [shareLinkCopied, setShareLinkCopied] = useState(false);
-	const navigate = useNavigate();
+
 	const params = useParams();
 	const auth = getAuth();
 
@@ -44,7 +44,7 @@ function Listing() {
 		};
 
 		fetchListing();
-	}, [navigate, params.listingId]);
+	}, [params.listingId]);
 
 	if (loading) {
 		return <Spinner />;
@@ -58,18 +58,18 @@ function Listing() {
 				pagination={{ clickable: true }}
 				navigation
 				className='swiper-container'>
-				{listing.imageUrls.map((url, index) => {
-					return (
-						<SwiperSlide key={index}>
-							<div
-								className='swiperSlideDiv'
-								style={{
-									background: `url(${listing.imageUrls[index]}) center no-repeat`,
-									backgroundSize: 'cover',
-								}}></div>
-						</SwiperSlide>
-					);
-				})}
+				{listing.imageUrls.map((url) => (
+					<SwiperSlide key={url}>
+						<div
+							style={{
+								background: `url(${url}) center no-repeat`,
+								backgroundSize: 'cover',
+								// NOTE: content needs a minimun height
+								minHeight: '300px',
+							}}
+							className='swiperSlideDiv'></div>
+					</SwiperSlide>
+				))}
 			</Swiper>
 
 			<div
