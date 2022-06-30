@@ -97,9 +97,9 @@ function Listing() {
 
 					{auth.currentUser?.uid !== listing.userRef && (
 						<Link
-							to={`/contact/${listing.userRef}?listingName=${listing.name}&listingLocation=${listing.location}`}
+							to={`/contact/${listing.userRef}?listingName=${listing.name}`}
 							className='primaryButton'>
-							Contact {listing.type === 'rent' ? 'Landlord' : 'Owner'}
+							Contact Landlord
 						</Link>
 					)}
 				</ul>

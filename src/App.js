@@ -18,6 +18,7 @@ import SignUp from './pages/SignUp';
 import Category from './pages/Category';
 import CreateListing from './pages/CreateListing';
 import Listing from './pages/Listing';
+import Contact from './pages/Contact';
 
 function App() {
 	return (
@@ -49,6 +50,7 @@ function App() {
 						path='/category/:categoryName/:listingId'
 						element={<Listing />}
 					/>
+					<Route path='/contact/:landlordId' element={<Contact />} />
 				</Routes>
 				<Navbar />
 			</Router>
